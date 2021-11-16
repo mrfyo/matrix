@@ -198,8 +198,8 @@ func Diag(vs []float64) Matrix {
 
 // Linspace 初始化等间距行向量
 //
-// start 最小值  
-//  
+// start 最小值
+//
 // end 最大值
 //
 // dim 1 表示列向量；2 表示行向量
@@ -212,4 +212,118 @@ func Linspace(start float64, end float64, num int, dim int) Matrix {
 	}
 
 	return NewVector(array, dim)
+}
+
+// Add 矩阵相加
+func (A Matrix) Add(B Matrix) (S Matrix) {
+	if ShapeNotEqual(A.Shape, B.Shape) {
+		panic(fmt.Sprintf("two matrix cannot [add]. %v x %v", A.Shape, B.Shape))
+	}
+
+	S = Zeros(A.Shape)
+	for i := 0; i < S.Row; i++ {
+		for j := 0; j < S.Col; j++ {
+			S.Set(i, j, A.Get(i, j)+B.Get(i, j))
+		}
+	}
+
+	return
+}
+
+// Sub 矩阵相减
+func (A Matrix) Sub(B Matrix) (S Matrix) {
+	if ShapeNotEqual(A.Shape, B.Shape) {
+		panic(fmt.Sprintf("two matrix cannot [sub]. %v x %v", A.Shape, B.Shape))
+	}
+
+	S = Zeros(A.Shape)
+	for i := 0; i < S.Row; i++ {
+		for j := 0; j < S.Col; j++ {
+			S.Set(i, j, A.Get(i, j)-B.Get(i, j))
+		}
+	}
+
+	return
+}
+
+// Mul 点乘(同位置相乘，形状不变)
+func (A Matrix) Mul(B Matrix) (S Matrix) {
+
+	if ShapeNotEqual(A.Shape, B.Shape) {
+		panic(fmt.Sprintf("two matrix cannot [mul]. %v x %v", A.Shape, B.Shape))
+	}
+
+	S = Zeros(A.Shape)
+	for i := 0; i < S.Row; i++ {
+		for j := 0; j < S.Col; j++ {
+			S.Set(i, j, A.Get(i, j)*B.Get(i, j))
+		}
+	}
+	return
+}
+
+// Dot 矩阵乘法
+func (A Matrix) Dot(B Matrix) (S Matrix) {
+	if A.Col != B.Row {
+		panic(fmt.Sprintf("two matrix cannot [dot]. %v x %v", A.Shape, B.Shape))
+	}
+
+	shape := Shape{
+		Row: A.Row,
+		Col: B.Col,
+	}
+
+	S = Zeros(shape)
+	for i := 0; i < shape.Row; i++ {
+		for j := 0; j < shape.Col; j++ {
+			v := 0.0
+			for k := 0; k < A.Col; k++ {
+				v = v + A.Get(i, k)*B.Get(k, j)
+			}
+			S.Set(i, j, v)
+		}
+	}
+	return
+}
+
+// ScaleMul 矩阵比例乘
+func (A Matrix) ScaleMul(k float64) (S Matrix) {
+
+	S = Zeros(A.Shape)
+
+	for i := 0; i < S.Row; i++ {
+		for j := 0; j < S.Col; j++ {
+			S.Set(i, j, A.Get(i, j)*k)
+		}
+	}
+
+	return
+}
+
+// Copy 矩阵复制
+func (A Matrix) Copy() (S Matrix) {
+	S = Zeros(A.Shape)
+
+	for i := 0; i < S.Row; i++ {
+		for j := 0; j < S.Col; j++ {
+			S.Set(i, j, A.Get(i, j))
+		}
+	}
+	return
+}
+
+// T 转置
+func (A Matrix) T() (S Matrix) {
+	shape := Shape{
+		Row: A.Col,
+		Col: A.Row,
+	}
+	S = Zeros(shape)
+
+	for i := 0; i < shape.Row; i++ {
+		for j := 0; j < shape.Col; j++ {
+			S.Set(i, j, A.Get(j, i))
+		}
+	}
+	return
 }
