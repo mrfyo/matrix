@@ -23,6 +23,7 @@ func (s Shape) String() string {
 	return fmt.Sprintf("(%d, %d)", s.Row, s.Col)
 }
 
+// Matrix Struct is two-dim matrix like Matlab. 
 type Matrix struct {
 	Shape
 	array []float64
@@ -67,3 +68,30 @@ func (A Matrix) String() string {
 	}
 	return fmt.Sprintf("[%s]", strings.Join(Cols, "; "))
 }
+
+// NewMatrix 默认构造方法
+func NewMatrix(shape Shape, array []float64) (A Matrix) {
+	A.Shape = shape
+	A.array = array
+	return
+}
+
+// NewSquareMatrix 方块矩阵
+func NewSquareMatrix(n int, array []float64) (A Matrix) {
+	A.Shape = Shape{n, n}
+	A.array = array
+	return A
+}
+
+// NewVector 新建向量，dim = 1 表示列向量；dim = 2 表示行向量
+func NewVector(array []float64, dim int) (A Matrix) {
+	n := len(array)
+	if dim == 1 {
+		A = NewMatrix(Shape{n, 1}, array)
+	} else {
+		A = NewMatrix(Shape{1, n}, array)
+	}
+
+	return
+}
+
