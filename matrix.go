@@ -331,7 +331,7 @@ func (A Matrix) T() (S Matrix) {
 // Det 行列式
 func Det(A Matrix) float64 {
 	if A.Col != A.Row {
-		panic("matrix A must be square.")
+		panic("Det operation: matrix must be square.")
 	}
 
 	B := A.Copy()
@@ -357,3 +357,91 @@ func Det(A Matrix) float64 {
 	}
 	return det
 }
+
+// Inv 初等变换求逆矩阵
+func Inv(A Matrix) (S Matrix) {
+
+	if Det(A) == 0.0 {
+		panic("Det(A) is zero, so the matrix cannot be inv")
+	}
+
+	if A.Size() == 1 {
+		v := 1.0 / A.Get(0, 0)
+		return NewVector([]float64{v}, 1)
+	}
+
+	shape := Shape{
+		Row: A.Row,
+		Col: A.Col * 2,
+	}
+
+	B := Zeros(shape)
+	for i := 0; i < B.Row; i++ {
+		for j := 0; j < B.Col; j++ {
+			if j < A.Col {
+				B.Set(i, j, A.Get(i, j))
+			} else if j-A.Col == i {
+				B.Set(i, j, 1)
+			} else {
+				B.Set(i, j, 0)
+			}
+		}
+	}
+
+	m := B.Row
+	n := B.Col
+
+	// 上三角矩阵
+	// [a b]
+	// [0 c]
+	for j := 0; j < m; j++ {
+		for i := j + 1; i < m; i++ {
+			if B.Get(i, j) != 0 {
+				c := B.Get(i, j) / B.Get(j, j)
+				// k -> Col
+				for k := 0; k < n; k++ {
+					v := B.Get(i, k) - c*B.Get(j, k)
+					B.Set(i, k, v)
+				}
+			}
+		}
+	}
+
+	// 下三角矩阵
+	// [a 0]
+	// [0 c]
+	for j := m - 1; j >= 0; j-- {
+		for i := j - 1; i >= 0; i-- {
+			if B.Get(i, j) != 0 {
+				c := B.Get(i, j) / B.Get(j, j)
+				// k -> Col
+				for k := 0; k < n; k++ {
+					v := B.Get(i, k) - c*B.Get(j, k)
+					B.Set(i, k, v)
+				}
+			}
+		}
+	}
+
+	// 单位矩阵 [E | b]
+	for i := 0; i < m; i++ {
+		if B.Get(i, i) != 1 {
+			for j := m; j < n; j++ {
+				v := B.Get(i, j) / B.Get(i, i)
+				B.Set(i, j, v)
+			}
+		}
+	}
+
+	// 复制逆矩阵部分
+	S = Zeros(A.Shape)
+	for i := 0; i < m; i++ {
+		for j := 0; j < m; j++ {
+			S.Set(i, j, B.Get(i, j+m))
+		}
+	}
+
+	return
+}
+
+
