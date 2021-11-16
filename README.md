@@ -1,2 +1,2 @@
 # matrix
-matrix operation for go. Operations include `ADD`, `Mul`, `Dot`, `Det`, `Inv`, so on.
+matrix operation in go. Operations include `ADD`, `Mul`, `Dot`, `Det`, `Inv`, `LU`, `Cholesky` and so on.
