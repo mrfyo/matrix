@@ -327,3 +327,33 @@ func (A Matrix) T() (S Matrix) {
 	}
 	return
 }
+
+// Det 行列式
+func Det(A Matrix) float64 {
+	if A.Col != A.Row {
+		panic("matrix A must be square.")
+	}
+
+	B := A.Copy()
+
+	m := B.Row
+	n := B.Col
+	for j := 0; j < m; j++ {
+		for i := j + 1; i < m; i++ {
+			if B.Get(i, j) != 0 {
+				c := B.Get(i, j) / B.Get(j, j)
+				// k -> Col
+				for k := 0; k < n; k++ {
+					v := B.Get(i, k) - c*B.Get(j, k)
+					B.Set(i, k, v)
+				}
+			}
+		}
+	}
+
+	det := 1.0
+	for i := 0; i < m; i++ {
+		det *= B.Get(i, i)
+	}
+	return det
+}
