@@ -149,3 +149,67 @@ func (A Matrix) SetRow(i int, V Matrix) {
 		A.Set(i, j, V.Get(0, j))
 	}
 }
+
+// Zeros 零矩阵
+func Zeros(shape Shape) Matrix {
+	array := make([]float64, shape.Size())
+	return NewMatrix(shape, array)
+}
+
+// Ones 全 1 矩阵
+func Ones(shape Shape) Matrix {
+	array := make([]float64, shape.Size())
+	for i := 0; i < len(array); i++ {
+		array[i] = 1
+	}
+	return NewMatrix(shape, array)
+}
+
+// Full 填充矩阵
+func Full(shape Shape, v float64) Matrix {
+	array := make([]float64, shape.Size())
+	for i := 0; i < len(array); i++ {
+		array[i] = v
+	}
+	return NewMatrix(shape, array)
+}
+
+// Eye 单位矩阵
+func Eye(n int) Matrix {
+	shape := Shape{n, n}
+	array := make([]float64, shape.Size())
+
+	m := NewMatrix(shape, array)
+	for i := 0; i < n; i++ {
+		m.Set(i, i, 1)
+	}
+	return m
+}
+
+// Diag 分块矩阵
+func Diag(vs []float64) Matrix {
+	n := len(vs)
+	A := Zeros(Shape{n, n})
+	for i := 0; i < n; i++ {
+		A.Set(i, i, vs[i])
+	}
+	return A
+}
+
+// Linspace 初始化等间距行向量
+//
+// start 最小值  
+//  
+// end 最大值
+//
+// dim 1 表示列向量；2 表示行向量
+func Linspace(start float64, end float64, num int, dim int) Matrix {
+
+	array := make([]float64, num)
+	step := (end - start) / float64(num)
+	for j := 0; j < num; j++ {
+		array = append(array, step*float64(j))
+	}
+
+	return NewVector(array, dim)
+}
