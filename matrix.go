@@ -23,7 +23,7 @@ func (s Shape) String() string {
 	return fmt.Sprintf("(%d, %d)", s.Row, s.Col)
 }
 
-// Matrix Struct is two-dim matrix like Matlab. 
+// Matrix Struct is two-dim matrix like Matlab.
 type Matrix struct {
 	Shape
 	array []float64
@@ -49,6 +49,17 @@ func (A Matrix) GetIndex(ind int) float64 {
 		panic(fmt.Sprintf("index out of bounds: %d >= %d", ind, len(A.array)))
 	}
 	return A.array[ind]
+}
+
+// Set 设置元素
+func (A Matrix) Set(i, j int, v float64) {
+	ind := i*A.Col + j
+	A.array[ind] = v
+}
+
+// SetIndex 按下标替换
+func (A Matrix) SetIndex(ind int, v float64) {
+	A.array[ind] = v
 }
 
 func (A Matrix) String() string {
@@ -95,3 +106,46 @@ func NewVector(array []float64, dim int) (A Matrix) {
 	return
 }
 
+// GetCol 获取列向量
+func (A Matrix) GetCol(j int) (V Matrix) {
+	shape := Shape{
+		Row: A.Row,
+		Col: 1,
+	}
+
+	V = NewMatrix(shape, make([]float64, shape.Size()))
+	for i := 0; i < A.Row; i++ {
+		V.Set(i, 0, A.Get(i, j))
+	}
+
+	return
+}
+
+// SetCol 指定位置替换列向量
+func (A Matrix) SetCol(j int, V Matrix) {
+	for i := 0; i < A.Row; i++ {
+		A.Set(i, j, V.Get(i, 0))
+	}
+}
+
+// GetRow 获取行向量
+func (A Matrix) GetRow(i int) (V Matrix) {
+	shape := Shape{
+		Row: 1,
+		Col: A.Col,
+	}
+
+	V = NewMatrix(shape, make([]float64, shape.Size()))
+	for j := 0; j < shape.Col; j++ {
+		V.Set(0, j, A.Get(i, j))
+	}
+
+	return
+}
+
+// SetRow  指定位置替换行向量
+func (A Matrix) SetRow(i int, V Matrix) {
+	for j := 0; j < A.Col; j++ {
+		A.Set(i, j, V.Get(0, j))
+	}
+}
