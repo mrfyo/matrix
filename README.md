@@ -1,5 +1,5 @@
 # matrix
-matrix operation in go. Operations include `ADD`, `Mul`, `Dot`, `Det`, `Inv`, `LU`, `Cholesky` and so on.
+simple matrix in go. lib supported basic matrix operations, linag operations(like `Det`, `Inv`), matrix decomposition(like `LU`, `QR`, `Cholesky`), and so on.
 
 ## Installation
 
@@ -153,4 +153,25 @@ func main() {
 	fmt.Println(L)
 	fmt.Println(LT)
 }
+```
+
+### Vector Operations
+
+vector operations include `Norm`, `Inner`, `Cross`.
+
+```go
+func main() {
+	a := mat.NewVector([]float64{1, 2, 2}, 1)
+	b := mat.NewVector([]float64{0, 1, 1}, 1)
+	
+	// 3
+	fmt.Println(mat.Norm(a))
+	
+	// 4
+	fmt.Println(mat.Inner(a, b))
+	
+	// [0; -1; 1]
+	fmt.Println(mat.Cross(a, b))
+}
+
 ```

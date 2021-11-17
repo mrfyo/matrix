@@ -48,8 +48,8 @@ func Cross(A, B Matrix) (C Matrix) {
 
 	v := make([]float64, 3)
 	v[0] = A.GetIndex(1)*B.GetIndex(2) - A.GetIndex(2)*B.GetIndex(1)
-	v[1] = A.GetIndex(2)*B.GetIndex(2) - A.GetIndex(0)*B.GetIndex(2)
-	v[2] = A.GetIndex(0)*B.GetIndex(2) - A.GetIndex(1)*B.GetIndex(0)
+	v[1] = A.GetIndex(2)*B.GetIndex(0) - A.GetIndex(0)*B.GetIndex(2)
+	v[2] = A.GetIndex(0)*B.GetIndex(1) - A.GetIndex(1)*B.GetIndex(0)
 
 	C = NewMatrix(A.Shape, v)
 	return
