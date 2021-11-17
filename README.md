@@ -1,5 +1,5 @@
 # matrix
-simple matrix in go. lib supported basic matrix operations, linag operations(like `Det`, `Inv`), matrix decomposition(like `LU`, `QR`, `Cholesky`), vector operations(like `Norm`, `Inner`, `Cross`) and so on.
+simple matrix in go. lib supported basic matrix operations, linag operations(like `Det`, `Inv`), matrix decomposition(like `LU`, `QR`, `Cholesky`), vector operations(like `Norm`, `Inner`, `Cross`), polynomial and so on.
 
 ## Installation
 
