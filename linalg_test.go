@@ -1,7 +1,9 @@
 package matrix
 
-import "testing"
-
+import (
+	"math"
+	"testing"
+)
 
 func TestDet(t *testing.T) {
 	A := NewSquareMatrix(2, []float64{1, 0, 0, 4})
@@ -38,13 +40,28 @@ func TestInv(t *testing.T) {
 }
 
 func TestQR(t *testing.T) {
-	A := NewSquareMatrix(3, []float64{1,2,4,0,0,5,0,3,6})
+	A := NewSquareMatrix(3, []float64{1, 2, 4, 0, 0, 5, 0, 3, 6})
 	QExpected := NewSquareMatrix(3, []float64{1, 0, 0, 0, 0, 1, 0, 1, 0})
 	RExpected := NewSquareMatrix(3, []float64{1, 2, 4, 0, 3, 6, 0, 0, 5})
 	Q, R := QR(A)
 
-	if !MatrixEqual(QExpected, Q) || !MatrixEqual(RExpected, R){
+	if !MatrixEqual(QExpected, Q) || !MatrixEqual(RExpected, R) {
 		t.Error("error method: QR")
 	}
 
+}
+
+func TestQR2(t *testing.T) {
+	A := NewSquareMatrix(3, []float64{0, 1, 1, 1, 1, 0, 1, 0, 1})
+	QExpected := NewSquareMatrix(3,[]float64{0, math.Sqrt(4.0 / 6), math.Sqrt(1.0 / 3),
+			math.Sqrt(1.0 / 2), math.Sqrt(1.0 / 6), -math.Sqrt(1.0 / 3),
+			math.Sqrt(1.0 / 2), -math.Sqrt(1.0 / 6), math.Sqrt(1.0 / 3)})
+	RExpected := NewSquareMatrix(3, []float64{math.Sqrt(2), math.Sqrt(1.0 / 2), math.Sqrt(1.0 / 2),
+		0, math.Sqrt(6.0 / 4), math.Sqrt(6.0)/6,
+		0, 0, math.Sqrt(4.0 / 3)})
+	Q, R := QR(A)
+
+	if !MatrixEqual(QExpected, Q) || !MatrixEqual(RExpected, R) {
+		t.Error("error method: QR")
+	}
 }
