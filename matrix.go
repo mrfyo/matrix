@@ -80,32 +80,6 @@ func (A Matrix) String() string {
 	return fmt.Sprintf("[%s]", strings.Join(Cols, "; "))
 }
 
-// NewMatrix 默认构造方法
-func NewMatrix(shape Shape, array []float64) (A Matrix) {
-	A.Shape = shape
-	A.array = array
-	return
-}
-
-// NewSquareMatrix 方块矩阵
-func NewSquareMatrix(n int, array []float64) (A Matrix) {
-	A.Shape = Shape{n, n}
-	A.array = array
-	return A
-}
-
-// NewVector 新建向量，dim = 1 表示列向量；dim = 2 表示行向量
-func NewVector(array []float64, dim int) (A Matrix) {
-	n := len(array)
-	if dim == 1 {
-		A = NewMatrix(Shape{n, 1}, array)
-	} else {
-		A = NewMatrix(Shape{1, n}, array)
-	}
-
-	return
-}
-
 // GetCol 获取列向量
 func (A Matrix) GetCol(j int) (V Matrix) {
 	shape := Shape{
@@ -294,20 +268,16 @@ func Diag(vs []float64) Matrix {
 	return A
 }
 
-// Linspace 初始化等间距行向量
-//
-// start 最小值
-//
-// end 最大值
-//
-// dim 1 表示列向量；2 表示行向量
-func Linspace(start float64, end float64, num int, dim int) Matrix {
+// NewMatrix 默认构造方法
+func NewMatrix(shape Shape, array []float64) (A Matrix) {
+	A.Shape = shape
+	A.array = array
+	return
+}
 
-	array := make([]float64, num)
-	step := (end - start) / float64(num)
-	for j := 0; j < num; j++ {
-		array = append(array, step*float64(j))
-	}
-
-	return NewVector(array, dim)
+// NewSquareMatrix 方块矩阵
+func NewSquareMatrix(n int, array []float64) (A Matrix) {
+	A.Shape = Shape{n, n}
+	A.array = array
+	return A
 }
