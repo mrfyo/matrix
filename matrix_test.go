@@ -3,7 +3,7 @@ package matrix
 import "testing"
 
 func TestGet(t *testing.T) {
-	A := NewMatrix(Shape{2, 2}, []float64{1, 2, 3, 4})
+	A := Builder().Row().Link(1, 2).Link(3, 4).Build()
 
 	if A.Get(0, 0) != 1 {
 		t.Error("error access by Get method.")
@@ -23,7 +23,7 @@ func TestGet(t *testing.T) {
 }
 
 func TestGetIndex(t *testing.T) {
-	A := NewVector([]float64{1, 2, 3, 4}, 1)
+	A := Builder().Row().Link(1, 2, 3, 4).Build()
 
 	if A.GetIndex(2) != 3 {
 		t.Error("error access by GetIndex method.")
@@ -31,7 +31,7 @@ func TestGetIndex(t *testing.T) {
 }
 
 func TestSet(t *testing.T) {
-	A := NewVector([]float64{1, 2, 3, 4}, 1)
+	A := Builder().Row().Link(1, 2).Link(3, 4).Build()
 
 	A.Set(0, 0, 5)
 
@@ -40,6 +40,3 @@ func TestSet(t *testing.T) {
 	}
 
 }
-
-
-

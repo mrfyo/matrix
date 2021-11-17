@@ -12,5 +12,3 @@ go get -u github.com/mrfyo/matrix
 ```go
 import "github.com/mrfyo/matrix"
 ```
-
-
