@@ -69,7 +69,7 @@ func (A Matrix) String() string {
 		for j := 0; j < A.Col; j++ {
 			v := A.Get(i, j)
 			if v-math.Floor(v) < 1e-6 {
-				Col = append(Col, fmt.Sprintf("%d.", int(v)))
+				Col = append(Col, fmt.Sprintf("%d", int(v)))
 			} else {
 				Col = append(Col, fmt.Sprintf("%5f", A.Get(i, j)))
 			}
@@ -210,6 +210,22 @@ func (A Matrix) ScaleMul(k float64) (S Matrix) {
 	return
 }
 
+// T 转置
+func (A Matrix) T() (S Matrix) {
+	shape := Shape{
+		Row: A.Col,
+		Col: A.Row,
+	}
+	S = Zeros(shape)
+
+	for i := 0; i < shape.Row; i++ {
+		for j := 0; j < shape.Col; j++ {
+			S.Set(i, j, A.Get(j, i))
+		}
+	}
+	return
+}
+
 // Copy 矩阵复制
 func (A Matrix) Copy() (S Matrix) {
 	S = Zeros(A.Shape)
@@ -328,5 +344,3 @@ func NewSquareMatrix(n int, array []float64) (A Matrix) {
 	A.array = array
 	return A
 }
-
-

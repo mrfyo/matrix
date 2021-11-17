@@ -53,8 +53,16 @@ func TestQR(t *testing.T) {
 
 func TestQR2(t *testing.T) {
 	A := NewSquareMatrix(3, []float64{0, 1, 1, 1, 1, 0, 1, 0, 1})
-	QExpected := Builder().Row().Link(0, math.Sqrt(4.0/6), math.Sqrt(1.0/3)).Link(math.Sqrt(1.0/2), math.Sqrt(1.0/6), -math.Sqrt(1.0/3)).Link(math.Sqrt(1.0/2), -math.Sqrt(1.0/6), math.Sqrt(1.0/3)).Build()
-	RExpected := Builder().Row().Link(math.Sqrt(2), math.Sqrt(1.0/2), math.Sqrt(1.0/2)).Link(0, math.Sqrt(6.0/4), math.Sqrt(6.0)/6).Link(0, 0, math.Sqrt(4.0/3)).Build()
+	QExpected := Builder().Row().
+		Link(0, math.Sqrt(4.0/6), math.Sqrt(1.0/3)).
+		Link(math.Sqrt(1.0/2), math.Sqrt(1.0/6), -math.Sqrt(1.0/3)).
+		Link(math.Sqrt(1.0/2), -math.Sqrt(1.0/6), math.Sqrt(1.0/3)).
+		Build()
+	RExpected := Builder().Row().
+		Link(math.Sqrt(2), math.Sqrt(1.0/2), math.Sqrt(1.0/2)).
+		Link(0, math.Sqrt(6.0/4), math.Sqrt(6.0)/6).
+		Link(0, 0, math.Sqrt(4.0/3)).
+		Build()
 	Q, R := QR(A)
 
 	if !MatrixEqual(QExpected, Q) || !MatrixEqual(RExpected, R) {

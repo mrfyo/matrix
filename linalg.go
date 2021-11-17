@@ -2,22 +2,6 @@ package matrix
 
 import "math"
 
-// T 转置
-func (A Matrix) T() (S Matrix) {
-	shape := Shape{
-		Row: A.Col,
-		Col: A.Row,
-	}
-	S = Zeros(shape)
-
-	for i := 0; i < shape.Row; i++ {
-		for j := 0; j < shape.Col; j++ {
-			S.Set(i, j, A.Get(j, i))
-		}
-	}
-	return
-}
-
 // Det 行列式
 func Det(A Matrix) float64 {
 	if A.Col != A.Row {
@@ -157,7 +141,7 @@ func LU(A Matrix) (U Matrix, L Matrix) {
 	return
 }
 
-func Cholesky(A Matrix) (U Matrix, L Matrix) {
+func Cholesky(A Matrix) (L Matrix, LT Matrix) {
 	if A.Col != A.Row {
 		panic("matrix A must be square.")
 	}
@@ -170,7 +154,7 @@ func Cholesky(A Matrix) (U Matrix, L Matrix) {
 			v = v - L.Get(j, k)*L.Get(j, k)
 		}
 		if v < 0 {
-			panic("Cholesky(A) require that diagonal element of A is positive")
+			panic("Cholesky(A) require that A is positive definite matrix")
 		}
 		v = math.Sqrt(v)
 		L.Set(j, j, v)
@@ -183,7 +167,7 @@ func Cholesky(A Matrix) (U Matrix, L Matrix) {
 		}
 	}
 
-	U = L.T()
+	LT = L.T()
 
 	return
 }
