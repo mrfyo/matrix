@@ -260,7 +260,7 @@ func MatrixEqual(A, B Matrix) bool {
 
 	for i := 0; i < A.Row; i++ {
 		for j := 0; j < A.Col; j++ {
-			if math.Abs(A.Get(i, j) - B.Get(i, j)) > 1e-8 {
+			if math.Abs(A.Get(i, j)-B.Get(i, j)) > 1e-8 {
 				return false
 			}
 		}
@@ -328,3 +328,5 @@ func NewSquareMatrix(n int, array []float64) (A Matrix) {
 	A.array = array
 	return A
 }
+
+
