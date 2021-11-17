@@ -20,6 +20,56 @@ func Norm(A Matrix) (d float64) {
 	return
 }
 
+// Inner 向量内积（点积）
+func Inner(A, B Matrix) (d float64) {
+	if !(IsVector(A) && IsVector(B)) {
+		panic("Inner(A, B): A and B must be vector.")
+	}
+
+	if A.Size() != B.Size() {
+		panic("Inner(A, B): size must equal.")
+	}
+
+	for i := 0; i < A.Size(); i++ {
+		d += A.GetIndex(i) * B.GetIndex(i)
+	}
+	return
+}
+
+func Cross(A, B Matrix) (C Matrix) {
+	if !(IsVector(A) && IsVector(B)) {
+		panic("Cross(A, B): A and B must be vector.")
+	}
+
+	if A.Size() != 3 || B.Size() != 3 {
+		panic("Cross(A, B): size must equal.")
+	}
+
+	v := make([]float64, 3)
+	v[0] = A.GetIndex(1)*B.GetIndex(2) - A.GetIndex(2)*B.GetIndex(1)
+	v[1] = A.GetIndex(2)*B.GetIndex(2) - A.GetIndex(0)*B.GetIndex(2)
+	v[2] = A.GetIndex(0)*B.GetIndex(2) - A.GetIndex(1)*B.GetIndex(0)
+
+	C = NewMatrix(A.Shape, v)
+	return
+}
+
+// Schmidt 格拉姆-施密特变换
+func Schmidt(A Matrix) (V Matrix) {
+	if !IsVector(A) {
+		panic("Schmidt(A): A must be vector.")
+	}
+
+	d := Norm(A)
+	V = Zeros(V.Shape)
+	if d != 0 {
+		for i := 0; i < A.Size(); i++ {
+			V.SetIndex(i, A.GetIndex(i)/d)
+		}
+	}
+	return
+}
+
 // Linspace 初始化等间距行向量
 //
 // start 最小值
