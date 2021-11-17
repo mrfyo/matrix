@@ -222,6 +222,53 @@ func (A Matrix) Copy() (S Matrix) {
 	return
 }
 
+func MatrixAdd(target, sour Matrix) {
+	shape := target.Shape
+
+	for i := 0; i < shape.Row; i++ {
+		for j := 0; j < shape.Col; j++ {
+			v := target.Get(i, j) + sour.Get(i, j)
+			target.Set(i, j, v)
+		}
+	}
+}
+
+func MatrixSub(target, sour Matrix) {
+	shape := target.Shape
+
+	for i := 0; i < shape.Row; i++ {
+		for j := 0; j < shape.Col; j++ {
+			v := target.Get(i, j) - sour.Get(i, j)
+			target.Set(i, j, v)
+		}
+	}
+}
+
+func MatrixScaleMul(A Matrix, k float64) {
+	for i := 0; i < A.Row; i++ {
+		for j := 0; j < A.Col; j++ {
+			v := A.Get(i, j) * k
+			A.Set(i, j, v)
+		}
+	}
+}
+
+func MatrixEqual(A, B Matrix) bool {
+	if ShapeNotEqual(A.Shape, B.Shape) {
+		return false
+	}
+
+	for i := 0; i < A.Row; i++ {
+		for j := 0; j < A.Col; j++ {
+			if A.Get(i, j) != B.Get(i, j) {
+				return false
+			}
+		}
+	}
+
+	return true
+}
+
 // Zeros 零矩阵
 func Zeros(shape Shape) Matrix {
 	array := make([]float64, shape.Size())

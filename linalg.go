@@ -188,3 +188,38 @@ func Cholesky(A Matrix) (U Matrix, L Matrix) {
 	return
 }
 
+func QR(A Matrix) (Q Matrix, R Matrix) {
+	if A.Col != A.Row {
+		panic("matrix A must be square.")
+	}
+	n := A.Col
+
+	P := Zeros(A.Shape)
+	Q = Zeros(A.Shape)
+	for j := 0; j < A.Col; j++ {
+		alpha := A.GetCol(j)
+		for k := 0; k < j; k++ {
+			beta := Q.GetCol(k)
+			a := Inner(alpha, beta)
+			b := Inner(beta, beta)
+			c := a / b
+			P.Set(k, j, c)
+			MatrixSub(alpha, beta.ScaleMul(c))
+		}
+		P.Set(j, j, 1)
+		Q.SetCol(j, alpha)
+	}
+
+	T := Eye(n)
+	for j := 0; j < Q.Col; j++ {
+		d := Norm(Q.GetCol(j))
+		T.Set(j, j, d)
+		for i := 0; i < Q.Row; i++ {
+			Q.Set(i, j, Q.Get(i, j)/d)
+		}
+	}
+
+	R = T.Dot(P)
+
+	return
+}

@@ -36,6 +36,7 @@ func Inner(A, B Matrix) (d float64) {
 	return
 }
 
+// Inner 向量外积（叉积）
 func Cross(A, B Matrix) (C Matrix) {
 	if !(IsVector(A) && IsVector(B)) {
 		panic("Cross(A, B): A and B must be vector.")
