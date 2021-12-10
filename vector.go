@@ -80,7 +80,7 @@ func Schmidt(A Matrix) (V Matrix) {
 // dim 1 表示列向量；2 表示行向量
 func Linspace(start float64, end float64, num int, dim int) Matrix {
 
-	array := make([]float64, num)
+	array := make([]float64, 0, num)
 	step := (end - start) / float64(num)
 	for j := 0; j < num; j++ {
 		array = append(array, step*float64(j))
